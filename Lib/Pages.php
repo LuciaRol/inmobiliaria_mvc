@@ -10,7 +10,7 @@ class Pages {
             }
         }
 
-        /* require_once 'Views\header.php'; */
+        require_once 'Views/layout/header.php';
         /* si el require_once con comillas simples no funciona,
         probar las comillas dobles o probar la concatenación de la variable */
         require_once "Views/" . $pageName . ".php";
