@@ -18,68 +18,68 @@
     </div>
 
     <div>
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
             <div>
                 <label for="tipo">Tipo de vivienda: </label>
                 <select id="tipo" name="tipo">
-                    <option value="tipo1">Piso</option>
-                    <option value="tipo2">Adosado</option>
-                    <option value="tipo3">Chalet</option>
-                    <option value="tipo4" selected>Casa</option>
+                    <option value="Piso">Piso</option>
+                    <option value="Adosado">Adosado</option>
+                    <option value="Chalet">Chalet</option>
+                    <option value="Casa" selected>Casa</option>
                 </select>
             </div>
             
             <div>
                 <label for="zona">Zona:</label>
                 <select id="zona" name="zona">
-                    <option value="zona1">Centro</option>
-                    <option value="zona2">Zaidín</option>
-                    <option value="zona3">La Chana</option>
-                    <option value="zona4">Albaicín</option>
-                    <option value="zona5">Realejo</option>
-                    <option value="zona6">Sacromonte</option>
+                    <option value="Centro" selected>Centro</option>
+                    <option value="Zaidín">Zaidín</option>
+                    <option value="La Chana">La Chana</option>
+                    <option value="Albaicín">Albaicín</option>
+                    <option value="Realejo">Realejo</option>
+                    <option value="Sacromonte">Sacromonte</option>
                 </select>
             </div>
 
             <div>
                 <label for="dormitorios">Número de dormitorios: </label>
 
-                <input type="radio" id="dormitorios1" name="dormitorios" value="dormitorios1">
+                <input type="radio" id="dormitorios1" name="dormitorios" value="1">
                 <label for="dormitorios1">1</label>
 
-                <input type="radio" id="dormitorios2" name="dormitorios" value="dormitorios2">
+                <input type="radio" id="dormitorios2" name="dormitorios" value="2">
                 <label for="dormitorios2">2</label>
 
-                <input type="radio" id="dormitorios3" name="dormitorios" value="dormitorios3">
+                <input type="radio" id="dormitorios3" name="dormitorios" value="3">
                 <label for="dormitorios3">3</label>
 
-                <input type="radio" id="dormitorios4" name="dormitorios" value="dormitorios4">
+                <input type="radio" id="dormitorios4" name="dormitorios" value="4">
                 <label for="dormitorios4">4</label>
 
-                <input type="radio" id="dormitorios5" name="dormitorios" value="dormitorios5">
+                <input type="radio" id="dormitorios5" name="dormitorios" value="5">
                 <label for="dormitorios5">5</label>
             </div>
 
             <div>
                 <label for="precio">Precio:</label>
-                <input type="text"> €
+                <input type="text" name="precio"> €
             </div>
 
             <div>
                 <label for="tamano">Tamaño:</label>
-                <input type="text"> m<sup>2</sup>
+                <input type="text" name="tamano"> m<sup>2</sup>
             </div>
 
             <div>
                 <label for="extra">Extras (marque los que procedan): </label>
 
-                <input type="checkbox" id="extra1" name="extra1" value="extra1">
+                <input type="checkbox" id="extra1" name="extra[]" value="Piscina">
                 <label for="extra1">Piscina</label>
                 
-                <input type="checkbox" id="extra2" name="extra2" value="extra2">
+                <input type="checkbox" id="extra2" name="extra[]" value="Jardín">
                 <label for="extra2">Jardín</label>
                 
-                <input type="checkbox" id="extra3" name="extra3" value="extra3">
+                <input type="checkbox" id="extra3" name="extra[]" value="Garaje">
                 <label for="extra3">Garaje</label>
             </div>
 
@@ -96,12 +96,7 @@
             <div>
                 <input type="submit" value="Insertar vivienda">
             </div>
-            
-
         </form>
     </div>
-        
-
-
 </body>
 </html>
