@@ -60,9 +60,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombreArchivo = 'Vivienda.php';
     file_put_contents($nombreArchivo, $codigoPHP);
     
-    // Cuando metos los datos me lleva a una vista con los datos de la vivienda recién registrada
-    header("Location: nuevaVivienda.php");
-    exit();
+
+
+    
+    
 }
 
 
