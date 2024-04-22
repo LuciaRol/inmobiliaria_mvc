@@ -26,10 +26,17 @@
     echo "<p><strong>Observaciones:</strong> $observaciones</p>";
 
     if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
-        // Proceso de guardado del archivo
-        $destino = 'uploads/' . $archivo['name'];
-        if (move_uploaded_file($archivo['tmp_name'], $destino)) {
-            echo "<p><strong>Foto:</strong> <img src='$destino' alt='Imagen de la vivienda' style='width: 300px;'></p>";
+        $uploadDir = __DIR__ . '/uploads/';
+        $uploadFile = $uploadDir . basename($archivo['name']);
+        
+        // Verificar si el directorio de carga existe, si no, intentar crearlo
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        
+        if (move_uploaded_file($archivo['tmp_name'], $uploadFile)) {
+            $imagePath = 'uploads/' . htmlspecialchars(basename($archivo['name']));
+            echo "<p><strong>Foto:</strong> <a href='$imagePath' target='_blank'><img src='$imagePath' alt='Imagen de la vivienda' style='width: 300px;'></a></p>";
         } else {
             echo "<p>Error al guardar la foto.</p>";
         }

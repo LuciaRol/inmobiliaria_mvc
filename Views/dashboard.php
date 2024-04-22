@@ -54,6 +54,7 @@
                     <label for="archivo">Agregar foto:</label>
                     <input type="file" id="archivo" name="archivo">
                 </div>
+                
 
                 <div class="form_row">
                     <label for="mensaje">Observaciones:</label>
