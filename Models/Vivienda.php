@@ -2,7 +2,6 @@
 
 namespace Models;
 
-
 class Vivienda {
     public string $tipo;
     public string $zona;
@@ -14,7 +13,6 @@ class Vivienda {
     public string $foto;
     public string $observaciones;
     
-
     public function __construct($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $extras, $foto, $observaciones) {
         $this->tipo = $tipo;
         $this->zona = $zona;
@@ -27,68 +25,77 @@ class Vivienda {
         $this->observaciones = $observaciones;
     }
 
-    // GETTERS Y SETTERS
+    // GETTERS
     public function getTipo() {
         return $this->tipo;
     }
 
-	public function getZona() {
+    public function getZona() {
         return $this->zona;
     }
 
-	public function getDireccion() {
+    public function getDireccion() {
         return $this->direccion;
     }
 
-	public function getDormitorios() {
+    public function getDormitorios() {
         return $this->dormitorios;
     }
 
-	public function getPrecio() {
+    public function getPrecio() {
         return $this->precio;
     }
 
-	public function getTamano() {
+    public function getTamano() {
         return $this->tamano;
     }
 
-	public function getFoto() {
+    public function getExtras():array {
+        return $this->extras;
+    }
+
+    public function getFoto() {
         return $this->foto;
     }
 
-	public function getObservaciones() {
+    public function getObservaciones() {
         return $this->observaciones;
     }
 
+    // SETTERS
     public function setTipo(string $tipo): void {
         $this->tipo = $tipo;
     }
 
-	public function setZona(string $zona): void {
+    public function setZona(string $zona): void {
         $this->zona = $zona;
     }
 
-	public function setDireccion(string $direccion): void {
+    public function setDireccion(string $direccion): void {
         $this->direccion = $direccion;
     }
 
-	public function setDormitorios(string $dormitorios): void {
+    public function setDormitorios(string $dormitorios): void {
         $this->dormitorios = $dormitorios;
     }
 
-	public function setPrecio(string $precio): void {
+    public function setPrecio(string $precio): void {
         $this->precio = $precio;
     }
 
-	public function setTamano(string $tamano): void {
+    public function setTamano(string $tamano): void {
         $this->tamano = $tamano;
     }
 
-	public function setFoto(string $foto): void {
+    public function setExtras(array $extras): void {
+        $this->extras = $extras;
+    }
+
+    public function setFoto(string $foto): void {
         $this->foto = $foto;
     }
 
-	public function setObservaciones(string $observaciones): void {
+    public function setObservaciones(string $observaciones): void {
         $this->observaciones = $observaciones;
     }
     
@@ -107,34 +114,30 @@ class Vivienda {
         $codigo .= "'" . $this->observaciones . "');";
         return $codigo;
     }
+
+    // Método para procesar los datos del formulario
+    public static function procesarFormulario() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $tipo = $_POST['tipo'] ?? '';
+            $zona = $_POST['zona'] ?? '';
+            $direccion = $_POST['direccion'] ?? '';
+            $dormitorios = $_POST['dormitorios'] ?? '';
+            $precio = $_POST['precio'] ?? '';
+            $tamano = $_POST['tamano'] ?? '';
+            $extras = $_POST['extra'] ?? [];
+            $foto = $_FILES['archivo']['name'] ?? '';
+            $observaciones = $_POST['mensaje'] ?? '';
+
+            $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $extras, $foto, $observaciones);
+            
+            // Genera el código y lo guardaa en un archivo
+            $codigoPHP = $vivienda->generarArchivo();
+            $nombreArchivo = 'registro.php';
+            file_put_contents($nombreArchivo, $codigoPHP);
+        }
+    }
 }
 
-// Procesamiento de los datos recogidos en el formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tipo = $_POST['tipo'] ?? '';
-    $zona = $_POST['zona'] ?? '';
-    $zona = $_POST['direccion'] ?? '';
-    $dormitorios = $_POST['dormitorios'] ?? '';
-    $precio = $_POST['precio'] ?? '';
-    $tamano = $_POST['tamano'] ?? '';
-    $extras = $_POST['extra'] ?? [];
-    $foto = $_FILES['archivo']['name'] ?? '';
-    $observaciones = $_POST['mensaje'] ?? '';
-    
-
-    $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $extras, $foto, $observaciones);
-    
-    // Genera la nueva vivienda y la guarda en un archivo
-    $codigoPHP = $vivienda->generarArchivo();
-    $nombreArchivo = 'registro.php';
-    file_put_contents($nombreArchivo, $codigoPHP);
-    
-
-
-    
-    
-}
-
-
-
+// Llamar al método para procesar el formulario
+//Vivienda::procesarFormulario();
 
