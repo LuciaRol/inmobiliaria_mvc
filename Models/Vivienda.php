@@ -121,6 +121,7 @@ class Vivienda {
             $tipo = $_POST['tipo'] ?? '';
             $zona = $_POST['zona'] ?? '';
             $direccion = $_POST['direccion'] ?? '';
+            $dormitorios = $_POST['dormitorios'] ?? '';
             $precio = $_POST['precio'] ?? '';
             $tamano = $_POST['tamano'] ?? '';
             $foto = $_FILES['archivo']['name'] ?? '';
@@ -129,7 +130,7 @@ class Vivienda {
             // Validar los datos ingresados
             if (!empty($tipo) && !empty($zona) && !empty($direccion) && !empty($precio) && !empty($tamano)) {
                 // Los datos son válidos, crear instancia de Vivienda
-                $vivienda = new Vivienda($tipo, $zona, $direccion, '', $precio, $tamano, [], $foto, $observaciones);
+                $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, [], $foto, $observaciones);
                 
                 // Verificar si la instancia es válida
                 if ($vivienda->esValida()) {
@@ -150,6 +151,11 @@ class Vivienda {
     
         // Verificar si el tamaño es un número válido
         if (!is_numeric($this->tamano)) {
+            return false; // El tamaño no es válido
+        }
+
+        // Verificar si el dormitorios es un número válido
+        if (!is_numeric($this->dormitorios)) {
             return false; // El tamaño no es válido
         }
     

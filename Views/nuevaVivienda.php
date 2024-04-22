@@ -1,3 +1,11 @@
+<?php
+use Controllers\ViviendaController; 
+
+$controller = new ViviendaController();
+$data = $controller->mostrarViviendaData();
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,37 +17,16 @@
     <h1>Información de la nueva vivienda</h1>
     
     <?php
-    // Suponemos que el archivo fue enviado correctamente
-    $tipo = $_POST['tipo'] ?? 'No especificado';
-    $zona = $_POST['zona'] ?? 'No especificado';
-    $direccion = $_POST['direccion'] ?? 'No especificado';
-    $precio = $_POST['precio'] ?? 'No especificado';
-    $tamano = $_POST['tamano'] ?? 'No especificado';
-    $observaciones = $_POST['mensaje'] ?? 'No especificado';
-    $archivo = $_FILES['archivo'] ?? null;
+    // Mostrar la información obtenida del controlador
+    echo "<p><strong>Tipo de vivienda:</strong> " . $data['tipo'] . "</p>";
+    echo "<p><strong>Zona:</strong> " . $data['zona'] . "</p>";
+    echo "<p><strong>Dirección:</strong> " . $data['direccion'] . "</p>";
+    echo "<p><strong>Precio:</strong> " . $data['precio'] . " €</p>";
+    echo "<p><strong>Tamaño:</strong> " . $data['tamano'] . " m<sup>2</sup></p>";
+    echo "<p><strong>Observaciones:</strong> " . $data['observaciones'] . "</p>";
 
-    echo "<p><strong>Tipo de vivienda:</strong> $tipo</p>";
-    echo "<p><strong>Zona:</strong> $zona</p>";
-    echo "<p><strong>Dirección:</strong> $direccion</p>";
-    echo "<p><strong>Precio:</strong> $precio €</p>";
-    echo "<p><strong>Tamaño:</strong> $tamano m<sup>2</sup></p>";
-    echo "<p><strong>Observaciones:</strong> $observaciones</p>";
-
-    if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
-        $uploadDir = __DIR__ . '/uploads/';
-        $uploadFile = $uploadDir . basename($archivo['name']);
-        
-        // Verificar si el directorio de carga existe, si no, intentar crearlo
-        if (!file_exists($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-        
-        if (move_uploaded_file($archivo['tmp_name'], $uploadFile)) {
-            $imagePath = 'uploads/' . htmlspecialchars(basename($archivo['name']));
-            echo "<p><strong>Foto:</strong> <a href='$imagePath' target='_blank'><img src='$imagePath' alt='Imagen de la vivienda' style='width: 300px;'></a></p>";
-        } else {
-            echo "<p>Error al guardar la foto.</p>";
-        }
+    if (isset($data['imagePath'])) {
+        echo "<p><strong>Foto:</strong> <img src='" . $data['imagePath'] . "' alt='Imagen de la vivienda' style='width: 300px;'></p>";
     } else {
         echo "<p>No se subió ninguna foto o hubo un error.</p>";
     }
