@@ -6,8 +6,7 @@ use Models\Vivienda;
 use Lib\Pages;
 
 class ViviendaController {
-    public function mostrarViviendaData() {
-        // Suponemos que el archivo fue enviado correctamente
+    public function mostrarDatos() {
         $tipo = $_POST['tipo'] ?? 'No especificado';
         $zona = $_POST['zona'] ?? 'No especificado';
         $direccion = $_POST['direccion'] ?? 'No especificado';
@@ -29,7 +28,7 @@ class ViviendaController {
             'beneficio' => null
         ];
         
-        // Definir los porcentajes de beneficio por zona y tamaño
+        // Define los porcentajes de beneficio por zona y tamaño
         $porcentajesBeneficio = [
             'Centro' => ['Menos de 100 m2' => 0.30, 'Más de 100 m2' => 0.35],
             'Zaidín' => ['Menos de 100 m2' => 0.25, 'Más de 100 m2' => 0.28],
@@ -39,7 +38,7 @@ class ViviendaController {
             'Realejo' => ['Menos de 100 m2' => 0.25, 'Más de 100 m2' => 0.28]
         ];
 
-        // Calcular el beneficio en base a la zona y el tamaño
+        // Calcula el beneficio en base a la zona y el tamaño
         if (isset($porcentajesBeneficio[$zona])) {
             if ($tamano <= 100) {
                 $data['beneficio'] = $porcentajesBeneficio[$zona]['Menos de 100 m2'];
@@ -49,14 +48,15 @@ class ViviendaController {
         }
 
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
-            // Verificar el tamaño del archivo
-            if ($archivo['size'] > 100 * 1024) { // 100KB en bytes
+            // Comprueba el tamaño de la foto
+            if ($archivo['size'] > 100 * 1024) { 
                 $data['error'] = "El tamaño de la foto no debe exceder los 100KB.";
             } else {
                 $uploadDir = __DIR__ . '/../Views/fotos/';
                 $uploadFile = $uploadDir . basename($archivo['name']);
                 
-                // Verificar si el directorio de carga existe, si no, intentar crearlo
+                // Comprueba si existe la carpeta donde se guardan las fotos.
+                // Si no existe, se crea el directorio.
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0755, true);
                 }

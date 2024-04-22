@@ -127,36 +127,27 @@ class Vivienda {
             $foto = $_FILES['archivo']['name'] ?? '';
             $observaciones = $_POST['mensaje'] ?? '';
     
-            // Validar los datos ingresados
+            
             if (!empty($tipo) && !empty($zona) && !empty($direccion) && !empty($precio) && !empty($tamano)) {
-                // Los datos son válidos, crear instancia de Vivienda
+
                 $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, [], $foto, $observaciones);
-                
-                // Verificar si la instancia es válida
                 if ($vivienda->esValida()) {
-                    // La instancia es válida, puedes hacer lo que necesites aquí
-                } else {
-                    // La instancia no es válida, puedes manejar este caso como prefieras
-                }
-            } else {
-                // Algunos campos obligatorios están vacíos, puedes manejar este caso como prefieras
+                } 
             }
         }
     }
     public function esValida() {
-        // Verificar si el precio es un número válido
+        
         if (!is_numeric($this->precio)) {
-            return false; // El precio no es válido
+            return false;
         }
     
-        // Verificar si el tamaño es un número válido
         if (!is_numeric($this->tamano)) {
-            return false; // El tamaño no es válido
+            return false; 
         }
 
-        // Verificar si el dormitorios es un número válido
         if (!is_numeric($this->dormitorios)) {
-            return false; // El tamaño no es válido
+            return false; 
         }
     
         return true;
@@ -177,6 +168,5 @@ class Vivienda {
     
 }
 
-// Llamar al método para procesar el formulario
-//Vivienda::procesarFormulario();
+
 
