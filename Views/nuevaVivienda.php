@@ -9,33 +9,33 @@
     <h1>Información de la nueva vivienda</h1>
     
     <?php
-    
-    /* require_once 'Vivienda.php';
-    
-    // Mostrar la información de la vivienda
-    echo "<p><strong>Tipo de vivienda:</strong> $vivienda->tipo</p>";
-    echo "<p><strong>Zona:</strong> $vivienda->zona</p>";
-    echo "<p><strong>Número de dormitorios:</strong> $vivienda->dormitorios</p>";
-    echo "<p><strong>Precio:</strong> $vivienda->precio €</p>";
-    echo "<p><strong>Tamaño:</strong> $vivienda->tamano m<sup>2</sup></p>";
-    
-    // Extras
-    echo "<p><strong>Extras:</strong></p>";
-    if (!empty($vivienda->extras)) {
-        echo "<ul>";
-        foreach ($vivienda->extras as $extra) {
-            echo "<li>$extra</li>";
+    // Suponemos que el archivo fue enviado correctamente
+    $tipo = $_POST['tipo'] ?? 'No especificado';
+    $zona = $_POST['zona'] ?? 'No especificado';
+    $direccion = $_POST['direccion'] ?? 'No especificado';
+    $precio = $_POST['precio'] ?? 'No especificado';
+    $tamano = $_POST['tamano'] ?? 'No especificado';
+    $observaciones = $_POST['mensaje'] ?? 'No especificado';
+    $archivo = $_FILES['archivo'] ?? null;
+
+    echo "<p><strong>Tipo de vivienda:</strong> $tipo</p>";
+    echo "<p><strong>Zona:</strong> $zona</p>";
+    echo "<p><strong>Dirección:</strong> $direccion</p>";
+    echo "<p><strong>Precio:</strong> $precio €</p>";
+    echo "<p><strong>Tamaño:</strong> $tamano m<sup>2</sup></p>";
+    echo "<p><strong>Observaciones:</strong> $observaciones</p>";
+
+    if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
+        // Proceso de guardado del archivo
+        $destino = 'uploads/' . $archivo['name'];
+        if (move_uploaded_file($archivo['tmp_name'], $destino)) {
+            echo "<p><strong>Foto:</strong> <img src='$destino' alt='Imagen de la vivienda' style='width: 300px;'></p>";
+        } else {
+            echo "<p>Error al guardar la foto.</p>";
         }
-        echo "</ul>";
     } else {
-        echo "<p>No se han seleccionado extras</p>";
+        echo "<p>No se subió ninguna foto o hubo un error.</p>";
     }
-    
-    // Foto
-    echo "<p><strong>Foto:</strong> $vivienda->foto</p>";
-    
-    // Observaciones
-    echo "<p><strong>Observaciones:</strong> $vivienda->observaciones</p>"; */
     ?>
 </body>
 </html>
