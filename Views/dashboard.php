@@ -12,7 +12,7 @@
         </div>
 
         <div class="form_container">
-            <form action="Views/nuevaVivienda.php" method="post" enctype="multipart/form-data">
+            <form action="index.php?action=mostrarnuevavivienda" method="post" enctype="multipart/form-data">
                 <div class="form_row">
                     <label for="tipo">Tipo de vivienda:</label>
                     <select id="tipo" name="tipo">
@@ -41,13 +41,21 @@
                 </div>
 
                 <div class="form_row">
+                    <label for="dormitorios">Dormitorios:</label>
+                    <input type="number" id="dormitorios" name="dormitorios">
+                </div>
+
+                <div class="form_row">
                     <label for="precio">Precio:</label>
                     <input type="text" id="precio" name="precio" placeholder="€">
                 </div>
 
                 <div class="form_row">
                     <label for="tamano">Tamaño:</label>
-                    <input type="text" id="tamano" name="tamano" placeholder="m²">
+                    <input type="number" id="tamano" name="tamano" placeholder="m²">
+                    <?php if (isset($errors['tamano'])): ?>
+                        <span class="error"><?php echo $errors['tamano']; ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <div class="form_row">
