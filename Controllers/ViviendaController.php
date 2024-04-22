@@ -23,8 +23,28 @@ class ViviendaController {
             'precio' => $precio,
             'tamano' => $tamano,
             'observaciones' => $observaciones,
-            'imagePath' => null
+            'imagePath' => null,
+            'beneficio' => null
         ];
+        
+        // Definir los porcentajes de beneficio por zona y tamaño
+        $porcentajesBeneficio = [
+            'Centro' => ['Menos de 100 m2' => 0.30, 'Más de 100 m2' => 0.35],
+            'Zaidín' => ['Menos de 100 m2' => 0.25, 'Más de 100 m2' => 0.28],
+            'Chana' => ['Menos de 100 m2' => 0.22, 'Más de 100 m2' => 0.25],
+            'Albaicín' => ['Menos de 100 m2' => 0.20, 'Más de 100 m2' => 0.35],
+            'Sacromonte' => ['Menos de 100 m2' => 0.22, 'Más de 100 m2' => 0.25],
+            'Realejo' => ['Menos de 100 m2' => 0.25, 'Más de 100 m2' => 0.28]
+        ];
+
+        // Calcular el beneficio en base a la zona y el tamaño
+        if (isset($porcentajesBeneficio[$zona])) {
+            if ($tamano <= 100) {
+                $data['beneficio'] = $porcentajesBeneficio[$zona]['Menos de 100 m2'];
+            } else {
+                $data['beneficio'] = $porcentajesBeneficio[$zona]['Más de 100 m2'];
+            }
+        }
 
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
             // Verificar el tamaño del archivo

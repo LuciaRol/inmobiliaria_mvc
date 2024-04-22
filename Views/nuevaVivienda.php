@@ -30,6 +30,7 @@ $data = $controller->mostrarViviendaData();
     } else {
         echo "<p>No se subió ninguna foto o su tamaño excede los 100kb.</p>";
     }
+    echo "<p><strong>Beneficio:</strong> " . $data['beneficio'] * $data['precio'] . "€" . "</p>";
     ?>
 </body>
 </html>
