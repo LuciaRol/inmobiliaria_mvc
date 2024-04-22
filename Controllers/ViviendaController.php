@@ -11,6 +11,7 @@ class ViviendaController {
         $tipo = $_POST['tipo'] ?? 'No especificado';
         $zona = $_POST['zona'] ?? 'No especificado';
         $direccion = $_POST['direccion'] ?? 'No especificado';
+        $dormitorios = $_POST['dormitorios'] ?? 'No especificado';
         $precio = $_POST['precio'] ?? 'No especificado';
         $tamano = $_POST['tamano'] ?? 'No especificado';
         $observaciones = $_POST['mensaje'] ?? 'No especificado';
@@ -20,6 +21,7 @@ class ViviendaController {
             'tipo' => $tipo,
             'zona' => $zona,
             'direccion' => $direccion,
+            'dormitorios' => $dormitorios,
             'precio' => $precio,
             'tamano' => $tamano,
             'observaciones' => $observaciones,

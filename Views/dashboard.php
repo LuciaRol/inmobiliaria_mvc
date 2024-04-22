@@ -42,12 +42,17 @@
 
                 <div class="form_row">
                     <label for="dormitorios">Dormitorios:</label>
-                    <input type="number" id="dormitorios" name="dormitorios" required>
+                    <input type="radio" id="dormitorios" name="dormitorios"> 1
+                    <input type="radio" id="dormitorios" name="dormitorios"> 2
+                    <input type="radio" id="dormitorios" name="dormitorios"> 3
+                    <input type="radio" id="dormitorios" name="dormitorios"> 4
+                    <input type="radio" id="dormitorios" name="dormitorios"> 5
+
                 </div>
 
                 <div class="form_row">
                     <label for="precio">Precio:</label>
-                    <input type="text" id="precio" name="precio" placeholder="€" required>
+                    <input type="number" id="precio" name="precio" placeholder="€" required>
                 </div>
 
                 <div class="form_row">

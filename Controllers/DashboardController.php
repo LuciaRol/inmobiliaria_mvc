@@ -19,10 +19,7 @@ class DashboardController {
             echo "Los valores introducidos no son válidos.";
             return;
         }
-        if (!is_numeric($_POST['dormitorios'])) {
-            echo "Los valores introducidos no son válidos.";
-            return;
-        }
+       
         if (!is_numeric($_POST['tamano'])) {
             echo "Los valores introducidos no son válidos.";
             return;

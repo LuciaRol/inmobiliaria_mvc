@@ -21,6 +21,7 @@ $data = $controller->mostrarViviendaData();
     echo "<p><strong>Tipo de vivienda:</strong> " . $data['tipo'] . "</p>";
     echo "<p><strong>Zona:</strong> " . $data['zona'] . "</p>";
     echo "<p><strong>Dirección:</strong> " . $data['direccion'] . "</p>";
+    echo "<p><strong>Dormitorios:</strong> " . $data['dormitorios'] . "</p>";
     echo "<p><strong>Precio:</strong> " . $data['precio'] . " €</p>";
     echo "<p><strong>Tamaño:</strong> " . $data['tamano'] . " m<sup>2</sup></p>";
     echo "<p><strong>Observaciones:</strong> " . $data['observaciones'] . "</p>";
