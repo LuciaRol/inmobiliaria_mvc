@@ -28,7 +28,7 @@ $data = $controller->mostrarViviendaData();
     if (isset($data['imagePath'])) {
         echo "<p><strong>Foto:</strong> <img src='" . $data['imagePath'] . "' alt='Imagen de la vivienda' style='width: 300px;'></p>";
     } else {
-        echo "<p>No se subió ninguna foto o hubo un error.</p>";
+        echo "<p>No se subió ninguna foto o su tamaño excede los 100kb.</p>";
     }
     ?>
 </body>

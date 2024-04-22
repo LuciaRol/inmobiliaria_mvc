@@ -10,6 +10,8 @@ class DashboardController {
     }
     
     public function mostrarNuevaVivienda() {
+    // Ruta al archivo CSV donde se almacenarán las viviendas
+    $archivoCSV = 'viviendas.csv';
     // Si la solicitud es POST, procesar el formulario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Validar que los datos sean numéricos sea numérico
@@ -40,22 +42,23 @@ class DashboardController {
         );
 
         // Validar la vivienda
-        $errores = $this->validarVivienda($vivienda);
-
-        // Si no hay errores, generar el archivo
-        if (empty($errores)) {
-            $codigoPHP = $vivienda->generarArchivo();
-            $nombreArchivo = 'registro.php';
-            file_put_contents($nombreArchivo, $codigoPHP);
-            // Redireccionar a una página de éxito o mostrar un mensaje de éxito
-            // header("Location: success.php");
-            // exit;
-        } else {
-            // Mostrar los errores al usuario
-            foreach ($errores as $error) {
-                echo $error . '<br>';
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Crear una instancia de Vivienda y procesar el formulario
+            Vivienda::procesarFormulario();
+            $fp = fopen($archivoCSV, 'a');
+             // Si no se pudo abrir el archivo, muestra un mensaje de error
+            if (!$fp) {
+                echo "Error al abrir el archivo CSV para escritura.";
+            return;
             }
+            // Escritura de la nueva vivienda en el archivo CSV
+            fputcsv($fp, $vivienda->toArray());
+
+            // Cierra el archivo después de escribir
+            fclose($fp);
         }
+
+      
     }
 
     // Si es GET o hay errores, renderizar la página del formulario
@@ -64,16 +67,5 @@ class DashboardController {
 }
 
 // Método para validar la vivienda
-private function validarVivienda($vivienda) {
-    $errores = [];
 
-    // Ejemplo de validación para el tipo de vivienda
-    if (empty($vivienda->getTipo())) {
-        $errores[] = "El tipo de vivienda es obligatorio.";
-    }
-
-    // Aquí puedes agregar más validaciones para otros campos de la vivienda
-
-    return $errores;
-}
 }

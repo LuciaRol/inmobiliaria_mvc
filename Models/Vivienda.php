@@ -161,6 +161,19 @@ class Vivienda {
     
         return true;
     }
+
+    public function toArray() {
+        return [
+            $this->tipo,
+            $this->zona,
+            $this->direccion,
+            $this->dormitorios,
+            $this->precio,
+            $this->tamano,
+            $this->foto,
+            $this->observaciones
+        ];
+    }
     
 }
 
