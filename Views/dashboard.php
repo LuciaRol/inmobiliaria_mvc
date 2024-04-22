@@ -42,11 +42,11 @@
 
                 <div class="form_row">
                     <label for="dormitorios">Dormitorios:</label>
-                    <input type="radio" id="dormitorios" name="dormitorios"> 1
-                    <input type="radio" id="dormitorios" name="dormitorios"> 2
-                    <input type="radio" id="dormitorios" name="dormitorios"> 3
-                    <input type="radio" id="dormitorios" name="dormitorios"> 4
-                    <input type="radio" id="dormitorios" name="dormitorios"> 5
+                    <input type="radio" id="dormitorios" name="dormitorios"  value="1"> 1
+                    <input type="radio" id="dormitorios" name="dormitorios"  value="2"> 2
+                    <input type="radio" id="dormitorios" name="dormitorios"  value="3"> 3
+                    <input type="radio" id="dormitorios" name="dormitorios"  value="4"> 4
+                    <input type="radio" id="dormitorios" name="dormitorios"  value="5"> 5
 
                 </div>
 
