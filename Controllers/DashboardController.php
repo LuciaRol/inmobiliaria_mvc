@@ -61,8 +61,8 @@ class DashboardController {
     // Si es GET o hay errores, renderizar la página del formulario
     $pagina = new Pages();
     $pagina->render("nuevaVivienda");
-}
+    }
 
-// Método para validar la vivienda
+
 
 }

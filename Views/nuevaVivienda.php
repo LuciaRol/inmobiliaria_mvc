@@ -23,7 +23,7 @@ $data = $controller->mostrarDatos();
     <p><strong>Tamaño:</strong> <?= $data['tamano']; ?> m<sup>2</sup></p>
 
     <?php if (isset($data['imagePath'])): ?>
-        <p><strong>Foto:</strong> <img src="<?= $data['imagePath']; ?>" alt="Imagen de la vivienda" style="width: 300px;"></p>
+        <p> <img src="<?= $data['imagePath']; ?>" alt="Imagen de la vivienda" style="width: 300px;"></p>
     <?php else: ?>
         <p>No se subió ninguna foto o su tamaño excede los 100kb.</p>
     <?php endif; ?>
