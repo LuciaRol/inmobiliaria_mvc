@@ -137,6 +137,8 @@ class Vivienda {
         }
     }
     public function esValida() {
+        // filtro de saneamiento para que los caracteres sean numericos
+        // filtro para validar
         
         if (!is_numeric($this->precio)) {
             return false;

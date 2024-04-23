@@ -15,6 +15,8 @@ $data = $controller->mostrarDatos();
 <body>
     <h1>Información de la nueva vivienda</h1>
 
+    <?php if($_SERVER['REQUEST_METHOD'] =='POST'):?>
+
     <p><strong>Tipo de vivienda:</strong> <?= $data['tipo']; ?></p>
     <p><strong>Zona:</strong> <?= $data['zona']; ?></p>
     <p><strong>Dirección:</strong> <?= $data['direccion']; ?></p>
@@ -30,5 +32,7 @@ $data = $controller->mostrarDatos();
 
     <p><strong>Observaciones:</strong> <?= $data['observaciones']; ?></p>
     <p><strong>Beneficio:</strong> <?= $data['beneficio'] * $data['precio']; ?>€</p>
+
+    <?php endif;?>
 </body>
 </html>
