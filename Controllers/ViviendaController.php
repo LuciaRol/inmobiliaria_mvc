@@ -15,7 +15,12 @@ class ViviendaController {
         $tamano = $_POST['tamano'] ?? 'No especificado';
         $observaciones = $_POST['mensaje'] ?? 'No especificado';
         $archivo = $_FILES['archivo'] ?? null;
-
+    
+        
+        $fotoData = $this -> validarFoto($archivo);
+        $beneficio = $this -> calcularBeneficio($zona, $tamano);
+    
+        // Define los datos
         $data = [
             'tipo' => $tipo,
             'zona' => $zona,
@@ -24,11 +29,16 @@ class ViviendaController {
             'precio' => $precio,
             'tamano' => $tamano,
             'observaciones' => $observaciones,
-            'imagePath' => null,
-            'beneficio' => null
+            'imagePath' => $fotoData['imagePath'], // Ruta de la foto si se cargó correctamente
+            'beneficio' => $beneficio, // Porcentaje de beneficio calculado
+            'error' => $fotoData['error'] ?? null // Mensaje de error de la carga de la foto
         ];
-        
-        // Define los porcentajes de beneficio por zona y tamaño
+    
+        return $data;
+    }
+    
+
+    function calcularBeneficio($zona, $tamano):string {
         $porcentajesBeneficio = [
             'Centro' => ['Menos de 100 m2' => 0.30, 'Más de 100 m2' => 0.35],
             'Zaidín' => ['Menos de 100 m2' => 0.25, 'Más de 100 m2' => 0.28],
@@ -37,16 +47,24 @@ class ViviendaController {
             'Sacromonte' => ['Menos de 100 m2' => 0.22, 'Más de 100 m2' => 0.25],
             'Realejo' => ['Menos de 100 m2' => 0.25, 'Más de 100 m2' => 0.28]
         ];
-
-        // Calcula el beneficio en base a la zona y el tamaño
+    
+        // Verifica si la zona está definida
         if (isset($porcentajesBeneficio[$zona])) {
+            // Determina el beneficio según el tamaño de la propiedad
             if ($tamano <= 100) {
-                $data['beneficio'] = $porcentajesBeneficio[$zona]['Menos de 100 m2'];
+                return $porcentajesBeneficio[$zona]['Menos de 100 m2'];
             } else {
-                $data['beneficio'] = $porcentajesBeneficio[$zona]['Más de 100 m2'];
+                return $porcentajesBeneficio[$zona]['Más de 100 m2'];
             }
+        } else {
+            // Si la zona no está definida, devuelve un mensaje de error
+            return "Zona no válida";
         }
+    }
 
+    function validarFoto($archivo) {
+        $data = [];
+    
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
             // Comprueba el tamaño de la foto
             if ($archivo['size'] > 100 * 1024) { 
@@ -69,8 +87,10 @@ class ViviendaController {
         } else {
             $data['error'] = "No se subió ninguna foto o el tamaño de la misma excedió los 100 kb.";
         }
-
+    
         return $data;
     }
+    
+    
 
 }
