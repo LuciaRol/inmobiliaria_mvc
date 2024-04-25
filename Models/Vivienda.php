@@ -141,34 +141,62 @@ class Vivienda {
         }
     }
     // Método para validar la foto de la vivienda
-    public function validarFoto($archivo) {
-        $data = ['imagePath' => ''];
+    // public function validarFoto($archivo) {
+    //     if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
+    //         // Comprueba el tamaño de la foto
+    //         if ($archivo['size'] > 100 * 1024) { 
+    //             // Lanzar una excepción si el tamaño excede el límite
+    //             throw new \Exception("El tamaño de la foto excede los 100KB.");
+    //         } else {
+    //             $uploadDir = __DIR__ . '/../Views/fotos/';
+    //             $uploadFile = $uploadDir . basename($archivo['name']);
+                
+    //             // Comprueba si existe la carpeta donde se guardan las fotos.
+    //             // Si no existe, se crea el directorio.
+    //             if (!file_exists($uploadDir)) {
+    //                 mkdir($uploadDir, 0755, true);
+    //             }
+                
+    //             if (move_uploaded_file($archivo['tmp_name'], $uploadFile)) {
+    //                 return 'Views/fotos/' . htmlspecialchars(basename($archivo['name']));
+    //             }
+    //         }
+    //     } else {
+    //         throw new \Exception("No se subió ninguna foto o ocurrió un error durante la carga.");
+    //     }
+    // }
     
+    public function cargarFoto($archivo) {
+        if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
+            $uploadDir = __DIR__ . '/../Views/fotos/';
+            $uploadFile = $uploadDir . basename($archivo['name']);
+    
+            // Comprueba si existe la carpeta donde se guardan las fotos.
+            // Si no existe, se crea el directorio.
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+    
+            if (move_uploaded_file($archivo['tmp_name'], $uploadFile)) {
+                return 'Views/fotos/' . htmlspecialchars(basename($archivo['name']));
+            }
+        }
+        return null; // Retorna null si no se pudo cargar la foto
+    }
+
+    public function validarFoto($archivo) {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
             // Comprueba el tamaño de la foto
             if ($archivo['size'] > 100 * 1024) { 
-                $data['error'] = "El tamaño de la foto no debe exceder los 100KB.";
-            } else {
-                $uploadDir = __DIR__ . '/../Views/fotos/';
-                $uploadFile = $uploadDir . basename($archivo['name']);
-                
-                // Comprueba si existe la carpeta donde se guardan las fotos.
-                // Si no existe, se crea el directorio.
-                if (!file_exists($uploadDir)) {
-                    mkdir($uploadDir, 0755, true);
-                }
-                
-                if (move_uploaded_file($archivo['tmp_name'], $uploadFile)) {
-                    $imagePath = 'Views/fotos/' . htmlspecialchars(basename($archivo['name']));
-                    $data['imagePath'] = $imagePath;
-                }
+                // Lanzar una excepción si el tamaño excede el límite
+                throw new \Exception("El tamaño de la foto excede los 100KB.");
             }
         } else {
-            $data['error'] = "No se subió ninguna foto o el tamaño de la misma excedió los 100 kb.";
+            throw new \Exception("No se subió ninguna foto o ocurrió un error durante la carga.");
         }
-        // Devuelve la ruta
-        return $data;
     }
+
+
 
     function calcularBeneficio($zona, $tamano):string {
         $porcentajesBeneficio = [

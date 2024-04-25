@@ -8,7 +8,7 @@ use Lib\Pages;
 class ViviendaController {
     public     function mostrarDatos() {
         $vivienda = Vivienda::procesarFormulario();
-        $fotoData = $vivienda->validarFoto($_FILES['archivo'] ?? null);
+        $fotoData = $vivienda->cargarFoto($_FILES['archivo'] ?? null);
         $beneficio = $vivienda->calcularBeneficio($vivienda->getZona(), $vivienda->getTamano());
     
         // Define los datos
@@ -20,7 +20,7 @@ class ViviendaController {
             'precio' => $vivienda->getPrecio(),
             'tamano' => $vivienda->getTamano(),
             'observaciones' => $vivienda->getObservaciones(),
-            'imagePath' => $fotoData['imagePath'], // Ruta de la foto si se cargó correctamente
+            'imagePath' => $fotoData, // Ruta de la foto si se cargó correctamente
             'beneficio' => $beneficio, // Porcentaje de beneficio calculado
             'error' => $fotoData['error'] ?? null // Mensaje de error de la carga de la foto
         ];
