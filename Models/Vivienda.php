@@ -126,21 +126,30 @@ class Vivienda {
     public static function validarCampos($tipo, $zona, $direccion, $precio, $tamano) {
         $campos = ['tipo' => $tipo, 'zona' => $zona, 'direccion' => $direccion, 'precio' => $precio, 'tamano' => $tamano];
         $campos_vacios = [];
-
+        $campos_no_numericos = [];
+    
         foreach ($campos as $nombre => $valor) {
             if (empty($valor)) {
                 $campos_vacios[] = $nombre;
+            } elseif ($nombre === 'precio' && filter_var($valor, FILTER_VALIDATE_INT) === false) {
+                $campos_no_numericos[] = $nombre;
+            } elseif ($nombre === 'tamano' && filter_var($valor, FILTER_VALIDATE_INT) === false) {
+                $campos_no_numericos[] = $nombre;
             }
         }
-
-        if (!empty($campos_vacios)) {
-            $mensaje = "No has introducido el/los siguiente(s) campo(s): " . implode(', ', $campos_vacios);
-            return $mensaje;
-        } else {
-            return null; // Si todos los campos están llenos, devuelve null
-        }
-    }
     
+        $errores = [];
+    
+        if (!empty($campos_vacios)) {
+            $errores[] = "No has introducido el/los siguiente(s) campo(s): " . implode(', ', $campos_vacios);
+        }
+    
+        if (!empty($campos_no_numericos)) {
+            $errores[] = "Los siguientes campos deben ser numéricos: " . implode(', ', $campos_no_numericos);
+        }
+    
+        return !empty($errores) ? implode('<br>', $errores) : null;
+    }
     
     public function cargarFoto($archivo) {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
@@ -168,7 +177,6 @@ class Vivienda {
                 throw new \Exception("El tamaño de la foto excede los 100KB.");
             }
         } else {
-            throw new \Exception("No se subió ninguna foto o ocurrió un error durante la carga.");
         }
     }
 
@@ -197,6 +205,7 @@ class Vivienda {
             return "Zona no válida";
         }
     }
+    // Función para guardar el csv
     public function toArray() {
         return [
             $this->tipo,

@@ -43,11 +43,13 @@ class DashboardController {
         try {
             $vivienda->validarFoto($_FILES['archivo'] ?? null);
         } catch (\Exception $e) {
-            // En caso de error en la validación de la foto, mostrar el mensaje de error
-            echo $e->getMessage();
-            echo '<br><button onclick="history.go(-1);">Volver</button>'; // Agregar un botón para volver atrás
+            ?>
+            <!-- En caso de error en la validación de la foto, mostrar el mensaje de error -->
+            <?php echo $e->getMessage(); ?>
+            <br>
+            <button onclick="history.go(-1);">Volver</button> <!-- Agregar un botón para volver atrás -->
+            <?php
             return;
-           
         }
         
         // Crear una instancia de Vivienda y procesar el formulario para tener la variable en Vivienda Controller y hacer las validaciones y 

@@ -52,7 +52,7 @@
 
                 <div class="form_row">
                     <label for="precio">Precio:</label>
-                    <input type="number" id="precio" name="precio" placeholder="€">
+                    <input type="string" id="precio" name="precio" placeholder="€">
                 </div>
 
                 <div class="form_row">
