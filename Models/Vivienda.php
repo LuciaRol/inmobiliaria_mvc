@@ -112,22 +112,33 @@ class Vivienda {
             $foto = $_FILES['archivo']['name'] ?? '';
             $observaciones = $_POST['mensaje'] ?? '';
 
-            if (!empty($tipo) && !empty($zona) && !empty($direccion) && !empty($precio) && !empty($tamano)) {
-                $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, [], $foto, $observaciones);
-                if ($vivienda->validaloquesea()) {
-                    return $vivienda;
-                } 
+            $mensaje_error = self::validarCampos($tipo, $zona, $direccion, $precio, $tamano);
+            if ($mensaje_error) {
+                return $mensaje_error;
+            }
+
+            $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, [], $foto, $observaciones);
+            return $vivienda;
+            } 
+        return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
+        }
+    
+    public static function validarCampos($tipo, $zona, $direccion, $precio, $tamano) {
+        $campos = ['tipo' => $tipo, 'zona' => $zona, 'direccion' => $direccion, 'precio' => $precio, 'tamano' => $tamano];
+        $campos_vacios = [];
+
+        foreach ($campos as $nombre => $valor) {
+            if (empty($valor)) {
+                $campos_vacios[] = $nombre;
             }
         }
-        return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
-    }
-// Pendiente de realizar los filtros en esValida
-    public function validaloquesea() {
-        // filtro de saneamiento para que los caracteres sean numericos
-        // filtro para validar
-        
-       
-        return true;
+
+        if (!empty($campos_vacios)) {
+            $mensaje = "No has introducido el/los siguiente(s) campo(s): " . implode(', ', $campos_vacios);
+            return $mensaje;
+        } else {
+            return null; // Si todos los campos están llenos, devuelve null
+        }
     }
 
     public function toArray() {

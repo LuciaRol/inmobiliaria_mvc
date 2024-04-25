@@ -14,16 +14,19 @@ class DashboardController {
     $archivoCSV = 'viviendas.csv';
     // Si la solicitud es POST, procesar el formulario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Validar que los datos sean numéricos
-        /* if (!is_numeric($_POST['precio'])) {
-            echo "Los valores introducidos no son válidos.";
+        $mensaje_error = Vivienda::validarCampos(
+            $_POST['tipo'] ?? '',
+            $_POST['zona'] ?? '',
+            $_POST['direccion'] ?? '',
+            $_POST['precio'] ?? '',
+            $_POST['tamano'] ?? ''
+        );
+
+        if ($mensaje_error) {
+            // Si hay errores en los campos, mostrar el mensaje de error
+            echo $mensaje_error;
             return;
         }
-       
-        if (!is_numeric($_POST['tamano'])) {
-            echo "Los valores introducidos no son válidos.";
-            return;
-        } */
         
         // Crear una instancia de Vivienda con los datos del formulario
         $vivienda = new Vivienda(
