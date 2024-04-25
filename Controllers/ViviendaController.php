@@ -6,7 +6,7 @@ use Models\Vivienda;
 use Lib\Pages;
 
 class ViviendaController {
-    public function mostrarDatos() {
+    public     function mostrarDatos() {
         $tipo = $_POST['tipo'] ?? 'No especificado';
         $zona = $_POST['zona'] ?? 'No especificado';
         $direccion = $_POST['direccion'] ?? 'No especificado';
@@ -63,7 +63,7 @@ class ViviendaController {
     }
 
     function validarFoto($archivo) {
-        $data = [];
+        $data = ['imagePath' => ''];
     
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
             // Comprueba el tamaño de la foto
