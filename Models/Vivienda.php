@@ -50,7 +50,7 @@ class Vivienda {
         return $this->tamano;
     }
 
-    public function getExtras():array {
+    public function getExtras(): array {
         return $this->extras;
     }
 
@@ -115,7 +115,7 @@ class Vivienda {
         return $codigo;
     }
 
-    // Método para procesar los datos del formulario
+    // Método para procesar los datos del formulario y devolver una instancia de Vivienda
     public static function procesarFormulario() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $tipo = $_POST['tipo'] ?? '';
@@ -126,16 +126,17 @@ class Vivienda {
             $tamano = $_POST['tamano'] ?? '';
             $foto = $_FILES['archivo']['name'] ?? '';
             $observaciones = $_POST['mensaje'] ?? '';
-    
-            
-            if (!empty($tipo) && !empty($zona) && !empty($direccion) && !empty($precio) && !empty($tamano)) {
 
+            if (!empty($tipo) && !empty($zona) && !empty($direccion) && !empty($precio) && !empty($tamano)) {
                 $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, [], $foto, $observaciones);
                 if ($vivienda->esValida()) {
+                    return $vivienda;
                 } 
             }
         }
+        return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
     }
+// Pendiente de realizar los filtros en esValida
     public function esValida() {
         // filtro de saneamiento para que los caracteres sean numericos
         // filtro para validar
@@ -169,6 +170,4 @@ class Vivienda {
     }
     
 }
-
-
-
+?>

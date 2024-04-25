@@ -40,8 +40,10 @@ class DashboardController {
 
         // Validar la vivienda
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Crear una instancia de Vivienda y procesar el formulario
+            // Crear una instancia de Vivienda y procesar el formulario para tener la variable en Vivienda Controller y hacer las validaciones y 
+            // saneamiento también en la clase
             Vivienda::procesarFormulario();
+            // Si todo va correctamente, se almacenará la información en el archivo CSV
             $fp = fopen($archivoCSV, 'a');
              // Si no se pudo abrir el archivo, muestra un mensaje de error
             if (!$fp) {

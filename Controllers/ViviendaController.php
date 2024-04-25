@@ -7,28 +7,24 @@ use Lib\Pages;
 
 class ViviendaController {
     public     function mostrarDatos() {
-        $tipo = $_POST['tipo'] ?? 'No especificado';
-        $zona = $_POST['zona'] ?? 'No especificado';
-        $direccion = $_POST['direccion'] ?? 'No especificado';
-        $dormitorios = $_POST['dormitorios'] ?? 'No especificado';
-        $precio = $_POST['precio'] ?? 'No especificado';
-        $tamano = $_POST['tamano'] ?? 'No especificado';
-        $observaciones = $_POST['mensaje'] ?? 'No especificado';
-        $archivo = $_FILES['archivo'] ?? null;
-    
+        $vivienda = Vivienda::procesarFormulario();
         
-        $fotoData = $this -> validarFoto($archivo);
-        $beneficio = $this -> calcularBeneficio($zona, $tamano);
+
+        $fotoData = $this->validarFoto($_FILES['archivo'] ?? null);
+
+        $fotoData = $this -> validarFoto($fotoData);
+
+        $beneficio = $this->calcularBeneficio($vivienda->getZona(), $vivienda->getTamano());
     
         // Define los datos
         $data = [
-            'tipo' => $tipo,
-            'zona' => $zona,
-            'direccion' => $direccion,
-            'dormitorios' => $dormitorios,
-            'precio' => $precio,
-            'tamano' => $tamano,
-            'observaciones' => $observaciones,
+            'tipo' => $vivienda->getTipo(),
+            'zona' => $vivienda->getZona(),
+            'direccion' => $vivienda->getDireccion(),
+            'dormitorios' => $vivienda->getDormitorios(),
+            'precio' => $vivienda->getPrecio(),
+            'tamano' => $vivienda->getTamano(),
+            'observaciones' => $vivienda->getObservaciones(),
             'imagePath' => $fotoData['imagePath'], // Ruta de la foto si se cargó correctamente
             'beneficio' => $beneficio, // Porcentaje de beneficio calculado
             'error' => $fotoData['error'] ?? null // Mensaje de error de la carga de la foto
