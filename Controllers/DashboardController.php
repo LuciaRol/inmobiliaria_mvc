@@ -21,12 +21,16 @@ class DashboardController {
             $_POST['precio'] ?? '',
             $_POST['tamano'] ?? ''
         );
-
+        
         if ($mensaje_error) {
             // Si hay errores en los campos, mostrar el mensaje de error
             echo $mensaje_error;
+            // aquí falta el botón de volver    
             return;
         }
+
+
+        
         // Crear una instancia de Vivienda con los datos del formulario
         $vivienda = new Vivienda(
             $_POST['tipo'] ?? '',

@@ -122,7 +122,8 @@ class Vivienda {
             } 
         return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
         }
-    
+    // En Validar Campos revisamos que los campos requeridos son introducidos y que precio y tamaño son numéricos para que funcione correctamente la 
+    // fórmula de cálculo del beneficio
     public static function validarCampos($tipo, $zona, $direccion, $precio, $tamano) {
         $campos = ['tipo' => $tipo, 'zona' => $zona, 'direccion' => $direccion, 'precio' => $precio, 'tamano' => $tamano];
         $campos_vacios = [];
