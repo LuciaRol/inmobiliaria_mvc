@@ -12,8 +12,6 @@ class ViviendaController {
 
         $fotoData = $this->validarFoto($_FILES['archivo'] ?? null);
 
-        $fotoData = $this -> validarFoto($fotoData);
-
         $beneficio = $this->calcularBeneficio($vivienda->getZona(), $vivienda->getTamano());
     
         // Define los datos
@@ -83,7 +81,7 @@ class ViviendaController {
         } else {
             $data['error'] = "No se subió ninguna foto o el tamaño de la misma excedió los 100 kb.";
         }
-    
+        // Devuelve la ruta
         return $data;
     }
     
