@@ -24,11 +24,16 @@ $data = $controller->mostrarDatos();
     <p><strong>Precio:</strong> <?= $data['precio']; ?> €</p>
     <p><strong>Tamaño:</strong> <?= $data['tamano']; ?> m<sup>2</sup></p>
 
-    <?php if (isset($data['imagePath'])): ?>
-        <p> <img src="<?= $data['imagePath']; ?>" alt="Imagen de la vivienda" style="width: 300px;"></p>
+    <?php if (isset($data['error'])): ?>
+    <p><?= $data['error']; ?></p>
+    <?php elseif (isset($data['imagePath'])): ?>
+        <p> 
+            <a href="<?= $data['imagePath']; ?>" target="_blank">Foto</a>
+        </p>
     <?php else: ?>
-        <p>No se subió ninguna foto o su tamaño excede los 100kb.</p>
+        <p>No se subió ninguna foto.</p>
     <?php endif; ?>
+
 
     <p><strong>Observaciones:</strong> <?= $data['observaciones']; ?></p>
     <p><strong>Beneficio:</strong> <?= $data['beneficio'] * $data['precio']; ?>€</p>

@@ -27,9 +27,6 @@ class ViviendaController {
     
         return $data;
     }
-    
-
-    
-    
+   
 
 }
