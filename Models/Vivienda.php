@@ -140,31 +140,7 @@ class Vivienda {
             return null; // Si todos los campos están llenos, devuelve null
         }
     }
-    // Método para validar la foto de la vivienda
-    // public function validarFoto($archivo) {
-    //     if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
-    //         // Comprueba el tamaño de la foto
-    //         if ($archivo['size'] > 100 * 1024) { 
-    //             // Lanzar una excepción si el tamaño excede el límite
-    //             throw new \Exception("El tamaño de la foto excede los 100KB.");
-    //         } else {
-    //             $uploadDir = __DIR__ . '/../Views/fotos/';
-    //             $uploadFile = $uploadDir . basename($archivo['name']);
-                
-    //             // Comprueba si existe la carpeta donde se guardan las fotos.
-    //             // Si no existe, se crea el directorio.
-    //             if (!file_exists($uploadDir)) {
-    //                 mkdir($uploadDir, 0755, true);
-    //             }
-                
-    //             if (move_uploaded_file($archivo['tmp_name'], $uploadFile)) {
-    //                 return 'Views/fotos/' . htmlspecialchars(basename($archivo['name']));
-    //             }
-    //         }
-    //     } else {
-    //         throw new \Exception("No se subió ninguna foto o ocurrió un error durante la carga.");
-    //     }
-    // }
+    
     
     public function cargarFoto($archivo) {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
