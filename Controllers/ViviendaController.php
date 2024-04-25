@@ -8,10 +8,7 @@ use Lib\Pages;
 class ViviendaController {
     public     function mostrarDatos() {
         $vivienda = Vivienda::procesarFormulario();
-        
-
         $fotoData = $this->validarFoto($_FILES['archivo'] ?? null);
-
         $beneficio = $this->calcularBeneficio($vivienda->getZona(), $vivienda->getTamano());
     
         // Define los datos

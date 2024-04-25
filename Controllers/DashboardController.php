@@ -14,8 +14,8 @@ class DashboardController {
     $archivoCSV = 'viviendas.csv';
     // Si la solicitud es POST, procesar el formulario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Validar que los datos sean numéricos sea numérico
-        if (!is_numeric($_POST['precio'])) {
+        // Validar que los datos sean numéricos
+        /* if (!is_numeric($_POST['precio'])) {
             echo "Los valores introducidos no son válidos.";
             return;
         }
@@ -23,7 +23,7 @@ class DashboardController {
         if (!is_numeric($_POST['tamano'])) {
             echo "Los valores introducidos no son válidos.";
             return;
-        }
+        } */
         
         // Crear una instancia de Vivienda con los datos del formulario
         $vivienda = new Vivienda(
@@ -38,24 +38,23 @@ class DashboardController {
             $_POST['mensaje'] ?? ''
         );
 
-        // Validar la vivienda
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Crear una instancia de Vivienda y procesar el formulario para tener la variable en Vivienda Controller y hacer las validaciones y 
-            // saneamiento también en la clase
-            Vivienda::procesarFormulario();
-            // Si todo va correctamente, se almacenará la información en el archivo CSV
-            $fp = fopen($archivoCSV, 'a');
-             // Si no se pudo abrir el archivo, muestra un mensaje de error
-            if (!$fp) {
-                echo "Error al abrir el archivo CSV para escritura.";
-            return;
-            }
-            // Escritura de la nueva vivienda en el archivo CSV
-            fputcsv($fp, $vivienda->toArray());
-
-            // Cierra el archivo después de escribir
-            fclose($fp);
+        
+        // Crear una instancia de Vivienda y procesar el formulario para tener la variable en Vivienda Controller y hacer las validaciones y 
+        // saneamiento también en la clase
+        Vivienda::procesarFormulario();
+        // Si todo va correctamente, se almacenará la información en el archivo CSV
+        $fp = fopen($archivoCSV, 'a');
+            // Si no se pudo abrir el archivo, muestra un mensaje de error
+        if (!$fp) {
+            echo "Error al abrir el archivo CSV para escritura.";
+        return;
         }
+        // Escritura de la nueva vivienda en el archivo CSV
+        fputcsv($fp, $vivienda->toArray());
+
+        // Cierra el archivo después de escribir
+        fclose($fp);
+        
 
       
     }

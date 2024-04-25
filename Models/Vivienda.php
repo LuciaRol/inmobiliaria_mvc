@@ -29,19 +29,15 @@ class Vivienda {
     public function getTipo() {
         return $this->tipo;
     }
-
     public function getZona() {
         return $this->zona;
     }
-
     public function getDireccion() {
         return $this->direccion;
     }
-
     public function getDormitorios() {
         return $this->dormitorios;
     }
-
     public function getPrecio() {
         return $this->precio;
     }
@@ -49,15 +45,12 @@ class Vivienda {
     public function getTamano() {
         return $this->tamano;
     }
-
     public function getExtras(): array {
         return $this->extras;
     }
-
     public function getFoto() {
         return $this->foto;
     }
-
     public function getObservaciones() {
         return $this->observaciones;
     }
@@ -66,35 +59,27 @@ class Vivienda {
     public function setTipo(string $tipo): void {
         $this->tipo = $tipo;
     }
-
     public function setZona(string $zona): void {
         $this->zona = $zona;
     }
-
     public function setDireccion(string $direccion): void {
         $this->direccion = $direccion;
     }
-
     public function setDormitorios(string $dormitorios): void {
         $this->dormitorios = $dormitorios;
     }
-
     public function setPrecio(string $precio): void {
         $this->precio = $precio;
     }
-
     public function setTamano(string $tamano): void {
         $this->tamano = $tamano;
     }
-
     public function setExtras(array $extras): void {
         $this->extras = $extras;
     }
-
     public function setFoto(string $foto): void {
         $this->foto = $foto;
     }
-
     public function setObservaciones(string $observaciones): void {
         $this->observaciones = $observaciones;
     }
@@ -129,7 +114,7 @@ class Vivienda {
 
             if (!empty($tipo) && !empty($zona) && !empty($direccion) && !empty($precio) && !empty($tamano)) {
                 $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, [], $foto, $observaciones);
-                if ($vivienda->esValida()) {
+                if ($vivienda->validaloquesea()) {
                     return $vivienda;
                 } 
             }
@@ -137,22 +122,11 @@ class Vivienda {
         return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
     }
 // Pendiente de realizar los filtros en esValida
-    public function esValida() {
+    public function validaloquesea() {
         // filtro de saneamiento para que los caracteres sean numericos
         // filtro para validar
         
-        if (!is_numeric($this->precio)) {
-            return false;
-        }
-    
-        if (!is_numeric($this->tamano)) {
-            return false; 
-        }
-
-        if (!is_numeric($this->dormitorios)) {
-            return false; 
-        }
-    
+       
         return true;
     }
 
