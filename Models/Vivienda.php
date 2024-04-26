@@ -83,23 +83,7 @@ class Vivienda {
     public function setObservaciones(string $observaciones): void {
         $this->observaciones = $observaciones;
     }
-    // Revisar si se puede borrar
-    // Método que genera un nuevo archivo php para guardar los datos introducidos
-    // public function generarArchivo() {
-    //     $codigo = '<?php' . PHP_EOL;
-    //     $codigo .= '$vivienda = new Vivienda(';
-    //     $codigo .= "'" . $this->tipo . "', ";
-    //     $codigo .= "'" . $this->zona . "', ";
-    //     $codigo .= "'" . $this->direccion . "', ";
-    //     $codigo .= "'" . $this->dormitorios . "', ";
-    //     $codigo .= "'" . $this->precio . "', ";
-    //     $codigo .= "'" . $this->tamano . "', ";
-    //     $codigo .= "['" . implode("', '", $this->extras) . "'], ";
-    //     $codigo .= "'" . $this->foto . "', ";
-    //     $codigo .= "'" . $this->observaciones . "');";
-    //     return $codigo;
-    // }
-
+   
     // Método para procesar los datos del formulario y devolver una instancia de Vivienda
     public static function procesarFormulario() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -111,17 +95,19 @@ class Vivienda {
             $tamano = $_POST['tamano'] ?? '';
             // Procesar los extras utilizando la función procesarExtras()
             $extras = self::procesarExtras($_POST);
-          
             $foto = $_FILES['archivo']['name'] ?? '';
             $observaciones = $_POST['mensaje'] ?? '';
-            // Revisamos los campos obilgatorios en el controlador y aquí
+            
+            // Revisamos los campos obligatorios en el controlador y aquí, por si se llamase mediante otro proceso 
+            // que no fuera el motivo principal del programa
             $mensaje_error = self::validarCamposObligatorios($tipo, $zona, $direccion, $precio, $tamano);
             if ($mensaje_error) {
-                return $mensaje_error;
+                 return $mensaje_error;
             }
-
-            $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $extras, $foto, $observaciones);
-            return $vivienda;
+            else{
+                $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $extras, $foto, $observaciones);
+                return $vivienda;
+                }
             } 
         return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
         }
