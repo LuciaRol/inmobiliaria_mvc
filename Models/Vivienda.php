@@ -26,32 +26,32 @@ class Vivienda {
     }
 
     // GETTERS
-    public function getTipo() {
+    public function getTipo():string {
         return $this->tipo;
     }
-    public function getZona() {
+    public function getZona():string {
         return $this->zona;
     }
-    public function getDireccion() {
+    public function getDireccion(): string {
         return $this->direccion;
     }
-    public function getDormitorios() {
+    public function getDormitorios(): string {
         return $this->dormitorios;
     }
-    public function getPrecio() {
+    public function getPrecio(): string {
         return $this->precio;
     }
 
-    public function getTamano() {
+    public function getTamano(): string {
         return $this->tamano;
     }
     public function getExtras(): array {
         return $this->extras;
     }
-    public function getFoto() {
+    public function getFoto(): string {
         return $this->foto;
     }
-    public function getObservaciones() {
+    public function getObservaciones(): string {
         return $this->observaciones;
     }
 
@@ -85,7 +85,8 @@ class Vivienda {
     }
    
     // Método para procesar los datos del formulario y devolver una instancia de Vivienda
-    public static function procesarFormulario() {
+    public static function procesarFormulario(): mixed  { 
+        // Es mixed ante la posibilidad que sea null, un string o Vivienda
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Sanear los campos antes de realizar cualquier validación
             $sanitizedData = self::sanearCampos(
@@ -137,7 +138,7 @@ class Vivienda {
     
     // En Validar Campos revisamos que los campos requeridos son introducidos y que precio y tamaño son numéricos para que funcione correctamente la 
     // fórmula de cálculo del beneficio
-    public static function validarCamposObligatorios($tipo, $zona, $direccion, $precio, $tamano) {
+    public static function validarCamposObligatorios($tipo, $zona, $direccion, $precio, $tamano): ?string {
         $campos = ['tipo' => $tipo, 'zona' => $zona, 'direccion' => $direccion, 'precio' => $precio, 'tamano' => $tamano];
         $campos_vacios = [];
         $campos_no_numericos = [];
@@ -165,7 +166,7 @@ class Vivienda {
         return !empty($errores) ? implode('<br>', $errores) : null;
     }
     
-    public static function sanearCampos($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $observaciones) {
+    public static function sanearCampos($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $observaciones):array {
         // Revisar que los campos de texto libre como dirección y observaciones solo tengan caracteres del alfabeto y numéricos
         $direccion = self::filtrar_letras_o_numeros($direccion);
         $observaciones = self::filtrar_letras_o_numeros($observaciones);
@@ -211,7 +212,7 @@ class Vivienda {
         }
     }
 
-    public function cargarFoto($archivo) {
+    public function cargarFoto($archivo): ?string {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
             $uploadDir = __DIR__ . '/../Fotos/';
             $uploadFile = $uploadDir . basename($archivo['name']);
@@ -229,7 +230,7 @@ class Vivienda {
         return null; // Retorna null si no se pudo cargar la foto
     }
 
-    public static function validarFoto($archivo) {
+    public static function validarFoto($archivo): void {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
             // Comprueba el tamaño de la foto
             if ($archivo['size'] > 100 * 1024) { 
@@ -240,7 +241,7 @@ class Vivienda {
         }
     }
 
-    public static function procesarExtras($post) {
+    public static function procesarExtras($post): array {
         $extras = [];
 
         // Verificar si cada checkbox está marcado y agregar el valor correspondiente al array de extras
@@ -282,7 +283,7 @@ class Vivienda {
         }
     }
     //funcion que abre el archivo csv y realiza el guardado
-    public static function guardarEnCSV(Vivienda $vivienda) {
+    public static function guardarEnCSV(Vivienda $vivienda): void {
         // Ruta al archivo CSV donde se almacenarán las viviendas
         $archivoCSV = 'viviendas.csv';
     
@@ -295,9 +296,8 @@ class Vivienda {
         fclose($fp);
     }
     // Función para guardar en el csv
-    public function toArray() {
-
-        $extrasString = implode('-', $this->extras);
+    public function toArray(): array {
+        $extrasString = implode('-', $this->extras); // Convertir el array de extras a una cadena separada por -
         return [
             $this->tipo,
             $this->zona,
@@ -305,7 +305,7 @@ class Vivienda {
             $this->dormitorios,
             $this->precio,
             $this->tamano,
-            $extrasString, // Convertir el array de extras a una cadena separada por -
+            $extrasString, 
             $this->foto,
             $this->observaciones
         ];

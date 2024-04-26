@@ -10,9 +10,7 @@ class DashboardController {
     }
     
     public function mostrarNuevaVivienda() {
-    // Ruta al archivo CSV donde se almacenarán las viviendas
-    
-        
+        // Realizamos una comprobación de los camposObligatorios para asegurarnos que existen.         
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mensaje_error = Vivienda::validarCamposObligatorios(
                 $_POST['tipo'] ?? '',
@@ -29,7 +27,6 @@ class DashboardController {
                 return;
             }
 
-            #$vivienda = Vivienda::procesarFormulario();
 
               // Revisamos que la foto no exceda los 100kb
             try {
