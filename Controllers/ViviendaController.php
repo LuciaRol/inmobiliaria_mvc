@@ -6,7 +6,7 @@ use Models\Vivienda;
 use Lib\Pages;
 
 class ViviendaController {
-    public     function mostrarDatos() {
+    public     function mostrarDatos():array {
         $vivienda = Vivienda::procesarFormulario();
         $fotoData = $vivienda->cargarFoto($_FILES['archivo'] ?? null);
         $beneficio = $vivienda->calcularBeneficio($vivienda->getZona(), $vivienda->getTamano());

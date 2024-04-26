@@ -4,12 +4,12 @@ namespace Controllers;
 use Lib\Pages;
 use Models\Vivienda;
 class DashboardController {
-    public function mostrarDashboard() {
+    public function mostrarDashboard():void {
         $pagina = new Pages();
         $pagina->render("dashboard");
     }
     
-    public function mostrarNuevaVivienda() {
+    public function mostrarNuevaVivienda():void {
         // Realizamos una comprobación de los camposObligatorios para asegurarnos que existen.         
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mensaje_error = Vivienda::validarCamposObligatorios(
