@@ -89,7 +89,7 @@ class Vivienda {
         // Es mixed ante la posibilidad que sea null, un string o Vivienda
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Sanear los campos antes de realizar cualquier validación
-            $sanitizedData = self::sanearCampos(
+            $datosSaneados = self::sanearCampos(
                 $_POST['tipo'] ?? '',
                 $_POST['zona'] ?? '',
                 $_POST['direccion'] ?? '',
@@ -99,13 +99,13 @@ class Vivienda {
                 $_POST['mensaje'] ?? ''
             );
     
-            // Validar los campos obligatorios utilizando los campos saneados
+            // Validar los campos obligatorios utilizando los campos saneados para volver a verificar que existen
             $mensaje_error = self::validarCamposObligatorios(
-                $sanitizedData['tipo'],
-                $sanitizedData['zona'],
-                $sanitizedData['direccion'],
-                $sanitizedData['precio'],
-                $sanitizedData['tamano']
+                $datosSaneados['tipo'],
+                $datosSaneados['zona'],
+                $datosSaneados['direccion'],
+                $datosSaneados['precio'],
+                $datosSaneados['tamano']
             );
     
             if ($mensaje_error) {
@@ -113,15 +113,15 @@ class Vivienda {
             } else {
                 // Crear una nueva instancia de Vivienda utilizando los campos saneados
                 $vivienda = new Vivienda(
-                    $sanitizedData['tipo'],
-                    $sanitizedData['zona'],
-                    $sanitizedData['direccion'],
-                    $sanitizedData['dormitorios'],
-                    $sanitizedData['precio'],
-                    $sanitizedData['tamano'],
+                    $datosSaneados['tipo'],
+                    $datosSaneados['zona'],
+                    $datosSaneados['direccion'],
+                    $datosSaneados['dormitorios'],
+                    $datosSaneados['precio'],
+                    $datosSaneados['tamano'],
                     self::procesarExtras($_POST),
                     $_FILES['archivo']['name'] ?? '',
-                    $sanitizedData['observaciones']
+                    $datosSaneados['observaciones']
                 );
     
                 // Llamar a la función para guardar la vivienda en el archivo CSV
@@ -185,10 +185,11 @@ class Vivienda {
         $tamano = filter_var($tamano, FILTER_SANITIZE_NUMBER_FLOAT);
         $tamano = floatval($tamano);
         $dormitorios = filter_var($dormitorios, FILTER_SANITIZE_NUMBER_FLOAT);
-    
+        $dormitorios = floatval($dormitorios);
+
         return ['tipo' => $tipo, 'zona' => $zona, 'direccion' => $direccion, 'precio' => $precio, 'tamano' => $tamano, 'dormitorios' => $dormitorios, 'observaciones' => $observaciones];
     }
-    
+    // Esta función se utiliza para verificar que se ha introducido datos
     public static function validar_requerido(string $texto):bool{
         return !(trim($texto)=='');
     }
@@ -199,18 +200,6 @@ class Vivienda {
         return preg_replace('/[^A-Za-z0-9\s]+/', '', $texto);
     }
 
-    public static function solo_numeros(string $texto): float {
-        // Encuentra todos los dígitos en la cadena de texto
-        preg_match('/\d+/', $texto, $matches);
-    
-        // Si se encuentra algún número, lo devuelve como un valor
-        if (!empty($matches)) {
-            return (float) $matches[0];
-        } else {
-            // Si no se encuentra ningún número, devuelve 0
-            return 0.0;
-        }
-    }
 
     public function cargarFoto($archivo): ?string {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
