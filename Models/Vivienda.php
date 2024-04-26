@@ -9,7 +9,7 @@ class Vivienda {
     public string $dormitorios;
     public string $precio;
     public string $tamano;
-    public $extras = [];
+    public array $extras = [];
     public string $foto;
     public string $observaciones;
     
@@ -83,22 +83,22 @@ class Vivienda {
     public function setObservaciones(string $observaciones): void {
         $this->observaciones = $observaciones;
     }
-    
+    // Revisar si se puede borrar
     // Método que genera un nuevo archivo php para guardar los datos introducidos
-    public function generarArchivo() {
-        $codigo = '<?php' . PHP_EOL;
-        $codigo .= '$vivienda = new Vivienda(';
-        $codigo .= "'" . $this->tipo . "', ";
-        $codigo .= "'" . $this->zona . "', ";
-        $codigo .= "'" . $this->direccion . "', ";
-        $codigo .= "'" . $this->dormitorios . "', ";
-        $codigo .= "'" . $this->precio . "', ";
-        $codigo .= "'" . $this->tamano . "', ";
-        $codigo .= "['" . implode("', '", $this->extras) . "'], ";
-        $codigo .= "'" . $this->foto . "', ";
-        $codigo .= "'" . $this->observaciones . "');";
-        return $codigo;
-    }
+    // public function generarArchivo() {
+    //     $codigo = '<?php' . PHP_EOL;
+    //     $codigo .= '$vivienda = new Vivienda(';
+    //     $codigo .= "'" . $this->tipo . "', ";
+    //     $codigo .= "'" . $this->zona . "', ";
+    //     $codigo .= "'" . $this->direccion . "', ";
+    //     $codigo .= "'" . $this->dormitorios . "', ";
+    //     $codigo .= "'" . $this->precio . "', ";
+    //     $codigo .= "'" . $this->tamano . "', ";
+    //     $codigo .= "['" . implode("', '", $this->extras) . "'], ";
+    //     $codigo .= "'" . $this->foto . "', ";
+    //     $codigo .= "'" . $this->observaciones . "');";
+    //     return $codigo;
+    // }
 
     // Método para procesar los datos del formulario y devolver una instancia de Vivienda
     public static function procesarFormulario() {
@@ -109,15 +109,18 @@ class Vivienda {
             $dormitorios = $_POST['dormitorios'] ?? '';
             $precio = $_POST['precio'] ?? '';
             $tamano = $_POST['tamano'] ?? '';
+            // Procesar los extras utilizando la función procesarExtras()
+            $extras = self::procesarExtras($_POST);
+          
             $foto = $_FILES['archivo']['name'] ?? '';
             $observaciones = $_POST['mensaje'] ?? '';
-
+            // Revisamos los campos obilgatorios en el controlador y aquí
             $mensaje_error = self::validarCamposObligatorios($tipo, $zona, $direccion, $precio, $tamano);
             if ($mensaje_error) {
                 return $mensaje_error;
             }
 
-            $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, [], $foto, $observaciones);
+            $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $extras, $foto, $observaciones);
             return $vivienda;
             } 
         return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
@@ -181,6 +184,22 @@ class Vivienda {
         }
     }
 
+    public static function procesarExtras($post) {
+        $extras = [];
+
+        // Verificar si cada checkbox está marcado y agregar el valor correspondiente al array de extras
+        if (isset($post['piscina'])) {
+            $extras[] = $post['piscina'];
+        }
+        if (isset($post['jardin'])) {
+            $extras[] = $post['jardin'];
+        }
+        if (isset($post['garaje'])) {
+            $extras[] = $post['garaje'];
+        }
+
+        return $extras;
+    }
 
 
     function calcularBeneficio($zona, $tamano):string {
@@ -208,6 +227,8 @@ class Vivienda {
     }
     // Función para guardar el csv
     public function toArray() {
+
+        $extrasString = implode('-', $this->extras);
         return [
             $this->tipo,
             $this->zona,
@@ -215,6 +236,7 @@ class Vivienda {
             $this->dormitorios,
             $this->precio,
             $this->tamano,
+            $extrasString, // Convertir el array de extras a una cadena separada por -
             $this->foto,
             $this->observaciones
         ];

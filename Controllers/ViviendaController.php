@@ -19,6 +19,7 @@ class ViviendaController {
             'dormitorios' => $vivienda->getDormitorios(),
             'precio' => $vivienda->getPrecio(),
             'tamano' => $vivienda->getTamano(),
+            'extras' => $vivienda-> getExtras(),
             'observaciones' => $vivienda->getObservaciones(),
             'imagePath' => $fotoData, // Ruta de la foto si se cargó correctamente
             'beneficio' => $beneficio, // Porcentaje de beneficio calculado

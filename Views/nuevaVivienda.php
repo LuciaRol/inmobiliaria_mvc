@@ -23,6 +23,11 @@ $data = $controller->mostrarDatos();
     <p><strong>Dormitorios:</strong> <?= $data['dormitorios']; ?></p>
     <p><strong>Precio:</strong> <?= $data['precio']; ?> €</p>
     <p><strong>Tamaño:</strong> <?= $data['tamano']; ?> m<sup>2</sup></p>
+    <p><strong>Extras:</strong> 
+        <?php foreach ($data['extras'] as $extra): ?>
+            <?= $extra; ?>
+        <?php endforeach; ?>
+    </p>
 
     <?php if (isset($data['error'])): ?>
     <p><?= $data['error']; ?></p>

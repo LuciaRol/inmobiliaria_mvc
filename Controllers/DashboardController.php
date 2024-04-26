@@ -18,10 +18,9 @@ class DashboardController {
 
     // los resultados del saneamiento tienen que ir a las funciones de validar, con los campos ya saneados
     
-    
-    
-    
-    
+    // Llamar a la función estática en Vivienda para procesar los extras
+    $extras = Vivienda::procesarExtras($_POST);
+
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mensaje_error = Vivienda::validarCamposObligatorios(
@@ -49,7 +48,7 @@ class DashboardController {
             $_POST['dormitorios'] ?? '',
             $_POST['precio'] ?? '',
             $_POST['tamano'] ?? '',
-            $_POST['extra'] ?? [],
+            $extras,
             $_FILES['archivo']['name'] ?? '',
             $_POST['mensaje'] ?? ''
         );

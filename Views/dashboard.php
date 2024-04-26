@@ -56,11 +56,26 @@
                 </div>
 
                 <div class="form_row">
-                    <label for="tamano">Tamaño:</label>
+                      <label for="tamano">Tamaño:</label>
                     <input type="number" id="tamano" name="tamano" placeholder="m²" required>
                     <?php if (isset($errors['tamano'])): ?>
                         <span class="error"><?php echo $errors['tamano']; ?></span>
                     <?php endif; ?>
+                </div>
+
+                
+                <div class="form_row">
+                    <label>Extras:</label>
+                    <div class="extra_options">
+                        <input type="checkbox" id="piscina" name="piscina" value="Piscina">
+                        <label for="piscina">Piscina</label>
+                        
+                        <input type="checkbox" id="jardin" name="jardin" value="Jardín">
+                        <label for="jardin">Jardín</label>
+                        
+                        <input type="checkbox" id="garaje" name="garaje" value="Garaje">
+                        <label for="garaje">Garaje</label>
+                    </div>
                 </div>
 
                 <div class="form_row">
