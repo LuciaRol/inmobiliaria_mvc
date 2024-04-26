@@ -87,30 +87,47 @@ class Vivienda {
     // Método para procesar los datos del formulario y devolver una instancia de Vivienda
     public static function procesarFormulario() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $tipo = $_POST['tipo'] ?? '';
-            $zona = $_POST['zona'] ?? '';
-            $direccion = $_POST['direccion'] ?? '';
-            $dormitorios = $_POST['dormitorios'] ?? '';
-            $precio = $_POST['precio'] ?? '';
-            $tamano = $_POST['tamano'] ?? '';
-            // Procesar los extras utilizando la función procesarExtras()
-            $extras = self::procesarExtras($_POST);
-            $foto = $_FILES['archivo']['name'] ?? '';
-            $observaciones = $_POST['mensaje'] ?? '';
-            
-            // Revisamos los campos obligatorios en el controlador y aquí, por si se llamase mediante otro proceso 
-            // que no fuera el motivo principal del programa
-            $mensaje_error = self::validarCamposObligatorios($tipo, $zona, $direccion, $precio, $tamano);
+            // Sanear los campos antes de realizar cualquier validación
+            $sanitizedData = self::sanearCampos(
+                $_POST['tipo'] ?? '',
+                $_POST['zona'] ?? '',
+                $_POST['direccion'] ?? '',
+                $_POST['dormitorios'] ?? '',
+                $_POST['precio'] ?? '',
+                $_POST['tamano'] ?? '',
+                $_POST['mensaje'] ?? ''
+            );
+    
+            // Validar los campos obligatorios utilizando los campos saneados
+            $mensaje_error = self::validarCamposObligatorios(
+                $sanitizedData['tipo'],
+                $sanitizedData['zona'],
+                $sanitizedData['direccion'],
+                $sanitizedData['precio'],
+                $sanitizedData['tamano']
+            );
+    
             if ($mensaje_error) {
-                 return $mensaje_error;
-            }
-            else{
-                $vivienda = new Vivienda($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $extras, $foto, $observaciones);
+                return $mensaje_error;
+            } else {
+                // Crear una nueva instancia de Vivienda utilizando los campos saneados
+                $vivienda = new Vivienda(
+                    $sanitizedData['tipo'],
+                    $sanitizedData['zona'],
+                    $sanitizedData['direccion'],
+                    $sanitizedData['dormitorios'],
+                    $sanitizedData['precio'],
+                    $sanitizedData['tamano'],
+                    self::procesarExtras($_POST),
+                    $_FILES['archivo']['name'] ?? '',
+                    $sanitizedData['observaciones']
+                );
+    
                 return $vivienda;
-                }
-            } 
-        return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
+            }
         }
+        return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
+    }
     // En Validar Campos revisamos que los campos requeridos son introducidos y que precio y tamaño son numéricos para que funcione correctamente la 
     // fórmula de cálculo del beneficio
     public static function validarCamposObligatorios($tipo, $zona, $direccion, $precio, $tamano) {
@@ -119,11 +136,11 @@ class Vivienda {
         $campos_no_numericos = [];
     
         foreach ($campos as $nombre => $valor) {
-            if (empty($valor)) {
+            if (!self::validar_requerido($valor)) {
                 $campos_vacios[] = $nombre;
-            } elseif ($nombre === 'precio' && filter_var($valor, FILTER_VALIDATE_INT) === false) { // en este campo hace doble revisión que el campo sea numérico, además del saneamiento previo
-                $campos_no_numericos[] = $nombre;
-            } elseif ($nombre === 'tamano' && filter_var($valor, FILTER_VALIDATE_INT) === false) { // en este campo hace doble revisión que el campo sea numérico, además del saneamiento previo
+            } #elseif ($nombre === 'precio' && filter_var($valor, FILTER_VALIDATE_FLOAT) === false) { // en este campo hace doble revisión que el campo sea numérico, además del saneamiento previo
+              #  $campos_no_numericos[] = $nombre;
+            elseif ($nombre === 'tamano' && filter_var($valor, FILTER_VALIDATE_INT) === false) { // en este campo hace doble revisión que el campo sea numérico, además del saneamiento previo
                 $campos_no_numericos[] = $nombre;
             }
         }
@@ -141,6 +158,55 @@ class Vivienda {
         return !empty($errores) ? implode('<br>', $errores) : null;
     }
     
+    public static function sanearCampos($tipo, $zona, $direccion, $dormitorios, $precio, $tamano, $observaciones) {
+        // Revisar que los campos de texto libre como dirección y observaciones solo tengan caracteres del alfabeto y numéricos
+        $direccion = self::filtrar_letras_o_numeros($direccion);
+        $observaciones = self::filtrar_letras_o_numeros($observaciones);
+        
+        // Aplicar trim a todos los campos para eliminar espacios en blanco al inicio y al final
+        $tipo = trim($tipo);
+        $zona = trim($zona);
+        $direccion = trim($direccion);
+        $observaciones= trim($observaciones);
+    
+        
+        
+        // Sanear los números: eliminar todos los caracteres excepto los dígitos, signo más y signo menos.
+        $precio = filter_var($precio, FILTER_SANITIZE_NUMBER_FLOAT); 
+        $precio = floatval($precio);
+        $tamano = filter_var($tamano, FILTER_SANITIZE_NUMBER_FLOAT);
+        $tamano = floatval($tamano);
+        $dormitorios = filter_var($dormitorios, FILTER_SANITIZE_NUMBER_FLOAT);
+    
+        return ['tipo' => $tipo, 'zona' => $zona, 'direccion' => $direccion, 'precio' => $precio, 'tamano' => $tamano, 'dormitorios' => $dormitorios, 'observaciones' => $observaciones];
+    }
+    
+    public static function validar_requerido(string $texto):bool{
+        return !(trim($texto)=='');
+    }
+    
+    // valida 
+    public static function filtrar_letras_o_numeros(string $texto): string {
+        // Filtrar solo letras (mayúsculas y minúsculas), números y espacios, eliminando otros caracteres
+        return preg_replace('/[^A-Za-z0-9\s]+/', '', $texto);
+    }
+
+    public static function solo_numeros(string $texto): float {
+        // Encuentra todos los dígitos en la cadena de texto
+        preg_match('/\d+/', $texto, $matches);
+    
+        // Si se encuentra algún número, lo devuelve como un valor
+        if (!empty($matches)) {
+            return (float) $matches[0];
+        } else {
+            // Si no se encuentra ningún número, devuelve 0
+            return 0.0;
+        }
+    }
+    
+
+
+
     public function cargarFoto($archivo) {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
             $uploadDir = __DIR__ . '/../Views/fotos/';
