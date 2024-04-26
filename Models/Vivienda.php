@@ -123,11 +123,18 @@ class Vivienda {
                     $sanitizedData['observaciones']
                 );
     
-                return $vivienda;
+                // Llamar a la función para guardar la vivienda en el archivo CSV
+                try {
+                    self::guardarEnCSV($vivienda);
+                    return $vivienda;
+                } catch (\Exception $e) {
+                    return $e->getMessage();
+                }
             }
         }
         return null; // Si no se crea una nueva instancia de Vivienda, devuelve null
     }
+    
     // En Validar Campos revisamos que los campos requeridos son introducidos y que precio y tamaño son numéricos para que funcione correctamente la 
     // fórmula de cálculo del beneficio
     public static function validarCamposObligatorios($tipo, $zona, $direccion, $precio, $tamano) {
@@ -203,13 +210,10 @@ class Vivienda {
             return 0.0;
         }
     }
-    
-
-
 
     public function cargarFoto($archivo) {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/../Views/fotos/';
+            $uploadDir = __DIR__ . '/../Fotos/';
             $uploadFile = $uploadDir . basename($archivo['name']);
     
             // Comprueba si existe la carpeta donde se guardan las fotos.
@@ -219,13 +223,13 @@ class Vivienda {
             }
     
             if (move_uploaded_file($archivo['tmp_name'], $uploadFile)) {
-                return 'Views/fotos/' . htmlspecialchars(basename($archivo['name']));
+                return 'Fotos/' . htmlspecialchars(basename($archivo['name']));
             }
         }
         return null; // Retorna null si no se pudo cargar la foto
     }
 
-    public function validarFoto($archivo) {
+    public static function validarFoto($archivo) {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
             // Comprueba el tamaño de la foto
             if ($archivo['size'] > 100 * 1024) { 
@@ -277,7 +281,20 @@ class Vivienda {
             return "Zona no válida";
         }
     }
-    // Función para guardar el csv
+    //funcion que abre el archivo csv y realiza el guardado
+    public static function guardarEnCSV(Vivienda $vivienda) {
+        // Ruta al archivo CSV donde se almacenarán las viviendas
+        $archivoCSV = 'viviendas.csv';
+    
+        $fp = fopen($archivoCSV, 'a');
+        if (!$fp) {
+            throw new \Exception("Error al abrir el archivo CSV para escritura.");
+        }
+        // Escritura de la nueva vivienda en el archivo CSV
+        fputcsv($fp, $vivienda->toArray());
+        fclose($fp);
+    }
+    // Función para guardar en el csv
     public function toArray() {
 
         $extrasString = implode('-', $this->extras);
