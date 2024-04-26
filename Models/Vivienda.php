@@ -230,15 +230,19 @@ class Vivienda {
         return null; // Retorna null si no se pudo cargar la foto
     }
 
-    public static function validarFoto($archivo): void {
+    public static function validarFoto($archivo) {
         if ($archivo && $archivo['error'] == UPLOAD_ERR_OK) {
             // Comprueba el tamaño de la foto
             if ($archivo['size'] > 100 * 1024) { 
-                // Lanzar una excepción si el tamaño excede el límite
-                throw new \Exception("El tamaño de la foto excede los 100KB.");
+                // Devuelve un mensaje de error si el tamaño excede el límite
+                return "El tamaño de la foto excede los 100KB.";
             }
         } else {
+            // Devuelve un mensaje de error si hay un error al cargar la foto
+            return "Error al cargar la foto.";
         }
+        // Si la validación pasa, devuelve null (sin errores)
+        return null;
     }
 
     public static function procesarExtras($post): array {

@@ -23,24 +23,25 @@ class DashboardController {
             if ($mensaje_error) {
                 // Si hay errores en los campos, mostrar el mensaje de error
                 echo $mensaje_error;
-                // aquí falta el botón de volver    
-                return;
+                ?>
+                <br>
+                <button onclick="history.go(-1);">Volver</button>
+                <?php
+                return; // para que no siga el proceso
             }
-
 
               // Revisamos que la foto no exceda los 100kb
-            try {
-                Vivienda::validarFoto($_FILES['archivo'] ?? null);
-            } catch (\Exception $e) {
+            $error = Vivienda::validarFoto($_FILES['archivo'] ?? null);
+            if ($error !== null) {
+                // Mostrar el mensaje de error y el botón para volver atrás
+                echo $error;
                 ?>
-                <!-- En caso de error en la validación de la foto, mostrar el mensaje de error -->
-                <?php echo $e->getMessage(); ?>
                 <br>
-                <button onclick="history.go(-1);">Volver</button> <!-- Agregar un botón para volver atrás -->
+                <button onclick="history.go(-1);">Volver</button>
                 <?php
-                return;
+                return; // para que no siga el proceso
             }
-        
+    
         }
 
         // Si es GET o hay errores, renderizar la página del formulario
