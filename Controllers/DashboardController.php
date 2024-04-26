@@ -13,8 +13,18 @@ class DashboardController {
     // Ruta al archivo CSV donde se almacenarán las viviendas
     $archivoCSV = 'viviendas.csv';
     // Si la solicitud es POST, procesar el formulario
+    
+    // aquí va el saneamiento
+
+    // los resultados del saneamiento tienen que ir a las funciones de validar, con los campos ya saneados
+    
+    
+    
+    
+    
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $mensaje_error = Vivienda::validarCampos(
+        $mensaje_error = Vivienda::validarCamposObligatorios(
             $_POST['tipo'] ?? '',
             $_POST['zona'] ?? '',
             $_POST['direccion'] ?? '',

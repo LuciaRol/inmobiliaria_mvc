@@ -112,7 +112,7 @@ class Vivienda {
             $foto = $_FILES['archivo']['name'] ?? '';
             $observaciones = $_POST['mensaje'] ?? '';
 
-            $mensaje_error = self::validarCampos($tipo, $zona, $direccion, $precio, $tamano);
+            $mensaje_error = self::validarCamposObligatorios($tipo, $zona, $direccion, $precio, $tamano);
             if ($mensaje_error) {
                 return $mensaje_error;
             }
@@ -124,7 +124,7 @@ class Vivienda {
         }
     // En Validar Campos revisamos que los campos requeridos son introducidos y que precio y tamaño son numéricos para que funcione correctamente la 
     // fórmula de cálculo del beneficio
-    public static function validarCampos($tipo, $zona, $direccion, $precio, $tamano) {
+    public static function validarCamposObligatorios($tipo, $zona, $direccion, $precio, $tamano) {
         $campos = ['tipo' => $tipo, 'zona' => $zona, 'direccion' => $direccion, 'precio' => $precio, 'tamano' => $tamano];
         $campos_vacios = [];
         $campos_no_numericos = [];
@@ -132,9 +132,9 @@ class Vivienda {
         foreach ($campos as $nombre => $valor) {
             if (empty($valor)) {
                 $campos_vacios[] = $nombre;
-            } elseif ($nombre === 'precio' && filter_var($valor, FILTER_VALIDATE_INT) === false) {
+            } elseif ($nombre === 'precio' && filter_var($valor, FILTER_VALIDATE_INT) === false) { // en este campo hace doble revisión que el campo sea numérico, además del saneamiento previo
                 $campos_no_numericos[] = $nombre;
-            } elseif ($nombre === 'tamano' && filter_var($valor, FILTER_VALIDATE_INT) === false) {
+            } elseif ($nombre === 'tamano' && filter_var($valor, FILTER_VALIDATE_INT) === false) { // en este campo hace doble revisión que el campo sea numérico, además del saneamiento previo
                 $campos_no_numericos[] = $nombre;
             }
         }
