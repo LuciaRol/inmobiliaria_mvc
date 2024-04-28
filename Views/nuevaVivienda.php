@@ -44,5 +44,7 @@ $data = $controller->mostrarDatos();
     <p><strong>Beneficio:</strong> <?= $data['beneficio'] * $data['precio']; ?>€</p>
 
     <?php endif;?>
+
+    <a href="<?=BASE_URL?>index.php">Volver al formulario</a> 
 </body>
 </html>

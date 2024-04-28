@@ -176,7 +176,6 @@ class Vivienda {
         $zona = trim($zona);
         $direccion = trim($direccion);
         $observaciones= trim($observaciones);
-    
         
         
         // Sanear los números: eliminar todos los caracteres excepto los dígitos, signo más y signo menos.
